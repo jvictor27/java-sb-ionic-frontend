@@ -1,4 +1,7 @@
+import { Observable } from 'rxjs';
+import { CategoriaService } from './../_services/categoria.service';
 import { Component, OnInit } from '@angular/core';
+import { CategoriaDto } from './../_models/categoria-dto';
 
 @Component({
   selector: 'app-categorias',
@@ -6,10 +9,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./categorias.page.scss'],
 })
 export class CategoriasPage implements OnInit {
+  
+	categorias$: Observable<CategoriaDto[]> ;
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+    constructor(public service: CategoriaService) { }
+  
+    ngOnInit() {
+    	this.findAll();
+	}
+	
+	findAll() {
+		this.categorias$ = this.service.findAll();
+	}
+  
 }
