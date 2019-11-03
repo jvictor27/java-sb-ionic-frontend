@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-// import { Router } from '@angular/router';
+import { CredenciaisDto } from './../_models/credenciais.dto';
+import { Component, OnInit } from '@angular/core';
 import { NavController, MenuController } from '@ionic/angular';
 
 @Component({
@@ -7,11 +7,17 @@ import { NavController, MenuController } from '@ionic/angular';
     templateUrl: 'home.page.html',
     styleUrls: ['home.page.scss'],
 })
-export class HomePage {
+export class HomePage implements OnInit {
+
+    credenciais: CredenciaisDto = {
+        email: '',
+        senha: ''
+    };
 
     constructor(public navCtrl: NavController, public menu: MenuController) {}
 
     login() {
+    console.log(this.credenciais);
        this.navCtrl.navigateRoot('/categorias');
     }
     
