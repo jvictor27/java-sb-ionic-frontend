@@ -1,18 +1,15 @@
-<ion-header>
-	<ion-toolbar>
-		<ion-buttons slot="start">
-			<ion-menu-button></ion-menu-button>
-		</ion-buttons>
-		<ion-title>categorias</ion-title>
-	</ion-toolbar>
-</ion-header>
+<app-header title="Categorias"></app-header>
 
-<ion-list  *ngIf="categorias$ | async as categorias">
-	<ion-item *ngFor="let categoria of categorias" >
-	  	<ion-label>{{ categoria.nome }}</ion-label>
-			<ion-avatar slot="start">
-		  		<img src="{{ bucketUrl }}cat{{ categoria.id }}.jpg"  >
-			</ion-avatar>
-	  	<ion-button size="small">Ver</ion-button>
-	</ion-item>        
-</ion-list>
+<ion-content>
+    <div class="ion-padding">
+		<ion-list  *ngIf="categorias$ | async as categorias">
+			<ion-item *ngFor="let categoria of categorias" >
+				<ion-label>{{ categoria.nome }}</ion-label>
+					<ion-avatar slot="start">
+						<img src="{{ bucketUrl }}cat{{ categoria.id }}.jpg"  >
+					</ion-avatar>
+				<ion-button size="small">Ver</ion-button>
+			</ion-item>        
+		</ion-list>
+	</div>
+</ion-content>		

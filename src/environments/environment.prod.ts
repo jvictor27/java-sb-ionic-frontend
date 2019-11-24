@@ -1,3 +1,5 @@
+import { STORAGE_KEYS } from '../app/_configs/storage_keys.config';
+
 export const environment = {
     production: true,
     baseUrl: 'http://localhost:8090/',

@@ -1,5 +1,5 @@
 import { StorageService } from './storage.service';
-import { LocalUser } from './../_models/local_user';
+import { LocalUser } from '../_models/local_user';
 import { HttpClient } from '@angular/common/http';
 import { CredenciaisDto } from './../_models/credenciais.dto';
 import { Injectable } from '@angular/core';

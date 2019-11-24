@@ -1,5 +1,5 @@
 import { environment } from './../../environments/environment';
-import { LocalUser } from './../_models/local-user';
+import { LocalUser } from '../_models/local_user';
 import { Injectable } from '@angular/core';
 
 @Injectable({

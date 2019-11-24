@@ -1,25 +1,26 @@
-<ion-content class="ion-padding">
-    <ion-card class="welcome-card">
-      	<img src="/assets/imgs/tela-inicial.png" alt="" />
-      	<ion-card-header>
-        	<ion-card-title>Sistema de pedidos</ion-card-title>
-      	</ion-card-header>
-      	<ion-card-content>
-        	<p>Bem vindo e boas compra! :)</p>
-      	</ion-card-content>
-    </ion-card>
-	
-	<form>
-		<ion-item>
-			<ion-label position="stacked">Email</ion-label>
-			<ion-input [(ngModel)]="credenciais.email" name="email" required type="text" placeholder="email@email.com"></ion-input>
-		</ion-item>
-		<ion-item>
-			<ion-label position="stacked">Senha</ion-label>
-			<ion-input [(ngModel)]="credenciais.senha" name="senha" required type="password" placeholder="123456"></ion-input>
-		</ion-item>
-		<ion-button expand="block" (click)="login()">Entrar</ion-button>
-	</form>
-	<ion-button expand="block" fill="outline">Registrar</ion-button>
-    
+<ion-content >
+	<div class="ion-padding">
+		<ion-card class="welcome-card">
+			<img src="/assets/imgs/tela-inicial.png" alt="" />
+			<ion-card-header>
+				<ion-card-title>Sistema de pedidos</ion-card-title>
+			</ion-card-header>
+			<ion-card-content>
+				<p>Bem vindo e boas compra! :)</p>
+			</ion-card-content>
+		</ion-card>
+		
+		<form>
+			<ion-item>
+				<ion-label position="stacked">Email</ion-label>
+				<ion-input [(ngModel)]="credenciais.email" name="email" required type="text" placeholder="email@email.com"></ion-input>
+			</ion-item>
+			<ion-item>
+				<ion-label position="stacked">Senha</ion-label>
+				<ion-input [(ngModel)]="credenciais.senha" name="senha" required type="password" placeholder="123456"></ion-input>
+			</ion-item>
+			<ion-button expand="block" (click)="login()">Entrar</ion-button>
+		</form>
+		<ion-button expand="block" fill="outline">Registrar</ion-button>
+    </div>
 </ion-content>

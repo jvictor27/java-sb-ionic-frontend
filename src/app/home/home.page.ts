@@ -31,7 +31,10 @@ export class HomePage implements OnInit {
     }
     
     ngOnInit() {
-        // this.menu.enable(false);
+        if (!environment.production) {
+            this.credenciais.email = 'alexandre.miranda@gmail.com';
+            this.credenciais.senha = '123';
+        }
     }
     
     ionViewWillEnter() {
