@@ -39,6 +39,12 @@ export class HomePage implements OnInit {
     
     ionViewWillEnter() {
         this.menu.enable(false);
+        this.authService.refreshToken()
+            .subscribe(response => {
+                this.authService.successfulLogin(response.headers.get('Authorization'));
+                this.navCtrl.navigateRoot('/categorias');
+            },
+            error => {});
     }
     
     ionViewDidLeave() {

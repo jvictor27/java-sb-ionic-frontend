@@ -25,6 +25,16 @@ export class AuthService {
       });
   }
 
+  refreshToken() {
+    return this.http.post(
+      `${environment.baseUrl}auth/refresh_token`,
+      {},
+      {
+        observe: 'response',
+        responseType: 'text'
+      });
+  }
+
   successfulLogin(autorizationValue: string) {
     const tok = autorizationValue.substring(7);
     const user: LocalUser = {
