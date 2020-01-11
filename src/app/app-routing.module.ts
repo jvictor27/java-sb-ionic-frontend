@@ -1,3 +1,4 @@
+import { LogoutComponent } from './shared/logout.component';
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
@@ -18,6 +19,14 @@ const routes: Routes = [
 	{
 		path: 'profile',
 		loadChildren: () => import('./profile/profile.module').then(m => m.ProfilePageModule) 
+	},
+	{
+		path: 'logout', 
+		component: LogoutComponent
+	},
+	{
+		path: 'signup',
+		loadChildren: () => import('./signup/signup.module').then(m => m.SignupPageModule) 
 	}
 ];
 

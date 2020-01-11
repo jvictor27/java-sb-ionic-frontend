@@ -1,3 +1,4 @@
+import { SharedModule } from './shared/shared.module';
 import { AuthInterceptor } from './_interceptors/auth.interceptor';
 import { ErrorInterceptor } from './_interceptors/error.interceptor';
 import { NgModule } from '@angular/core';
@@ -20,6 +21,7 @@ import { AppRoutingModule } from './app-routing.module';
 		BrowserModule,
 		HttpClientModule,
 		IonicModule.forRoot(),
+		SharedModule,
 		AppRoutingModule
 	],
 	providers: [
