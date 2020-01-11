@@ -14,17 +14,19 @@
 			</ion-item>
 
 			<ion-list radio-group>
-				<ion-list-header>
-					<ion-label position="stacked">Tipo de cliente</ion-label>
-				</ion-list-header>
-				<ion-item>
-					<ion-label>Pessoa física</ion-label>
-					<ion-radio formControlName="tipo" checked="true" value="1"></ion-radio>
-				</ion-item>
-				<ion-item>
-					<ion-label>Pessoa jurídica</ion-label>
-					<ion-radio formControlName="tipo" value="2"></ion-radio>
-				</ion-item>
+				<ion-radio-group>
+					<ion-list-header>
+						<ion-label position="stacked">Tipo de cliente</ion-label>
+					</ion-list-header>
+					<ion-item>
+						<ion-label>Pessoa física</ion-label>
+						<ion-radio formControlName="tipo" checked="true" value="1"></ion-radio>
+					</ion-item>
+					<ion-item>
+						<ion-label>Pessoa jurídica</ion-label>
+						<ion-radio formControlName="tipo" value="2"></ion-radio>
+					</ion-item>
+				</ion-radio-group>
 			</ion-list>
 
 			<ion-item>
@@ -75,14 +77,18 @@
 			</ion-item>
 			<ion-item>
 				<ion-label position="stacked">Estado*</ion-label>
-				<ion-select formControlName="estadoId" (ionChange)="updateCidades()">
-
+				<ion-select interface="popover" formControlName="estadoId" (ionChange)="updateCidades()">
+					<ion-select-option *ngFor="let estado of estados; first as f" [value]="estado.id"[selected]="f">
+						{{ estado.nome }}
+					</ion-select-option>
 				</ion-select>
 			</ion-item>
 			<ion-item>
 				<ion-label position="stacked">Cidade*</ion-label>
-				<ion-select formControlName="cidadeId">
-
+				<ion-select interface="popover" formControlName="cidadeId">
+					<ion-select-option *ngFor="let cidade of cidades"[value]="cidade.id">
+						{{ cidade.nome }}
+					</ion-select-option>
 				</ion-select>
 			</ion-item>
 			<ion-button expand="block" type="submit" [disabled]="signupForm.invalid">

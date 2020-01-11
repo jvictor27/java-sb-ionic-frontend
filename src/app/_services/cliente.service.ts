@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 
 import { StorageService } from './storage.service';
 import { ClienteDto } from '../_models/cliente-dto';
+import { SignupPageModule } from './../signup/signup.module';
 import { environment } from './../../environments/environment';
 
 
