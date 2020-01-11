@@ -1,26 +1,27 @@
-import { SharedModule } from './../shared/shared.module';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
+
 import { ProfilePage } from './profile.page';
+import { SharedModule } from './../shared/shared.module';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: ProfilePage
-  }
+	{
+		path: '',
+		component: ProfilePage
+	}
 ];
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    SharedModule,
-    RouterModule.forChild(routes)
-  ],
-  declarations: [ProfilePage]
+	imports: [
+		CommonModule,
+		FormsModule,
+		IonicModule,
+		SharedModule,
+		RouterModule.forChild(routes)
+	],
+	declarations: [ProfilePage]
 })
-export class ProfilePageModule {}
+export class ProfilePageModule { }

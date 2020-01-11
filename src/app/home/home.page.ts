@@ -1,8 +1,9 @@
-import { environment } from './../../environments/environment';
-import { AuthService } from './../_services/auth.service';
-import { CredenciaisDto } from './../_models/credenciais.dto';
 import { Component, OnInit } from '@angular/core';
 import { NavController, MenuController } from '@ionic/angular';
+
+import { CredenciaisDto } from '../_models/credenciais-dto';
+import { AuthService } from './../_services/auth.service';
+import { environment } from './../../environments/environment';
 
 @Component({
     selector: 'app-home',
