@@ -3,12 +3,12 @@
 <ion-content>
     <div class="ion-padding">
 		<ion-list  *ngIf="categorias$ | async as categorias">
-			<ion-item *ngFor="let categoria of categorias" >
+			<ion-item *ngFor="let categoria of categorias" (click)="showProdutos(categoria.id)">
 				<ion-label>{{ categoria.nome }}</ion-label>
 					<ion-thumbnail slot="start">
 						<ion-img src="{{ bucketUrl }}cat{{ categoria.id }}.jpg"  ></ion-img>
 				  	</ion-thumbnail>  
-				<ion-button size="small" (click)="showProdutos(categoria.id)">Ver</ion-button>
+				<!-- <ion-button size="small" (click)="showProdutos(categoria.id)">Ver</ion-button> -->
 			</ion-item>        
 		</ion-list>
 	</div>

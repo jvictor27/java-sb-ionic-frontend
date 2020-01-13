@@ -1,5 +1,7 @@
+import { NavController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+import { tap } from 'rxjs/operators';
 
 import { environment } from 'src/environments/environment';
 import { ProdutoDto } from '../_models/produto-dto';
@@ -17,7 +19,8 @@ export class ProdutosPage implements OnInit {
 
     constructor(
         public produtoService: ProdutoService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private navCtrl: NavController
     ) { }
 
     ngOnInit() {
@@ -27,27 +30,30 @@ export class ProdutosPage implements OnInit {
             (params: ParamMap) => {
                 console.log(params);
                 this.produtoService.findByCategoria(params.get('categoria_id'))
-                    .subscribe(response => {
+                    .pipe(
+                        tap(produto => {
+                            const produtos: ProdutoDto[] = produto['content']
+                            for (let index = 0; index < produtos.length; index++) {
+                                this.loadImageUrl(produtos[index]);
+                            }
+                        })
+                    ).subscribe(response => {
                         this.items = response['content'];
-                        this.loadImageUrls();
                     },
                         error => { });
             }
         );
     }
 
-    loadImageUrls(start?: number, end?: number) {
-        // for (let i = start; i <= end; i++) {
-
-        for (let i = 0; i < this.items.length; i++) {
-            const item = this.items[i];
-            this.produtoService.getSmallImageFromBucket(item.id)
-                .subscribe(response => {
-                    item.imageUrl = `${environment.bucketBaseUrl}prod${item.id}-small.jpg`;
-                },
-                    error => { });
-        }
+    loadImageUrl(item: ProdutoDto) {
+        this.produtoService.getSmallImageFromBucket(item.id)
+          .subscribe(response => {
+            item.imageUrl = `${environment.bucketBaseUrl}prod${item.id}-small.jpg`;
+          },
+          error => {});
     }
 
-    showDetail(itemId) { }
+    showDetail(itemId) {
+        this.navCtrl.navigateForward(['/produto-detail']);
+    }
 }
