@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, ParamMap } from '@angular/router';
+import { tap } from 'rxjs/operators';
 
 import { ProdutoDto } from 'src/app/_models/produto-dto';
+import { ProdutoService } from 'src/app/_services/produto.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'app-produto-detail',
@@ -9,15 +13,37 @@ import { ProdutoDto } from 'src/app/_models/produto-dto';
 })
 export class ProdutoDetailPage implements OnInit {
 
-    item: ProdutoDto = {
-        id: '1',
-        nome: 'Computador',
-        preco: 100.00
-    };
+    item: ProdutoDto;
 
-    constructor() { }
+    constructor(
+        private route: ActivatedRoute,
+        private produtoService: ProdutoService
+    ) { }
 
     ngOnInit() {
+        this.route.paramMap.subscribe(
+            (params: ParamMap) => {
+                console.log(params);
+                this.produtoService.findById(params.get('produto_id'))
+                    .pipe(
+                        tap(produto => {
+                            const prod: ProdutoDto = produto;
+                            this.loadImageUrl(prod);
+                        })
+                    )
+                    .subscribe(response => {
+                        this.item = response;
+                    },
+                        error => { });
+            });
+    }
+
+    loadImageUrl(item: ProdutoDto) {
+        this.produtoService.getSmallImageFromBucket(item.id)
+            .subscribe(response => {
+                item.imageUrl = `${environment.bucketBaseUrl}prod${item.id}.jpg`;
+            },
+                error => { });
     }
 
     addToCart(item) { }

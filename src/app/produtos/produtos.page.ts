@@ -53,7 +53,7 @@ export class ProdutosPage implements OnInit {
           error => {});
     }
 
-    showDetail(itemId) {
-        this.navCtrl.navigateForward(['/produto-detail']);
+    showDetail(produto_id) {
+        this.navCtrl.navigateForward(['/produto-detail', {produto_id: produto_id}]);
     }
 }
