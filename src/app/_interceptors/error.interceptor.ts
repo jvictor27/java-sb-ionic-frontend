@@ -5,6 +5,7 @@ import { catchError } from 'rxjs/operators';
 import { AlertController } from '@ionic/angular';
 
 import { StorageService } from '../_services/storage.service';
+import { FieldMessage } from './../_models/field-message';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
@@ -19,9 +20,16 @@ export class ErrorInterceptor implements HttpInterceptor {
 
         return next.handle(request)
             .pipe(
-                catchError(err => {
+                catchError((error, caught) => {
+                    let errorObj = error;
+                    if (errorObj.error) {
+                        errorObj = errorObj.error;
+                    }
+                    if (!errorObj.status) {
+                        errorObj = JSON.parse(errorObj);
+                    }
 
-                    switch (err.status) {
+                    switch (errorObj.status) {
                         case 401:
                             this.handled401();
                             console.log('case 401:');
@@ -29,17 +37,42 @@ export class ErrorInterceptor implements HttpInterceptor {
                         case 403:
                             this.handled403();
                             break;
+                        case 422:
+                            this.handled422(errorObj);
+                            break;    
                         default:
-                            this.handledDefaultError(err);
+                            // this.handledDefaultError(err);
+                            this.handledDefaultError(errorObj);
                             break;
                     }
 
                     // console.log("Erro capturado pelo interceptor")
-                    const error = err.error.message || err.statusText;
-                    return throwError(error);
-                    // return throwError(err.error);
+                    return throwError(errorObj);
                 })
             );
+    }
+
+    async handled422(err) {
+        const alert = await this.alertController.create({
+            header: 'ERRO 422: Validação',
+            message: this.listErrors(err.errors),
+            buttons: ['OK']
+        });
+        await alert.present();
+    }
+
+    listErrors(errors: FieldMessage[]): string {
+        let s = '';
+        for (let index = 0; index < errors.length; index++) {
+            s = s + '<p><strong>'
+                  + errors[index].fieldName
+                  + '</strong>: '
+                  + errors[index].message
+                  + '</p>';
+        }
+
+        return s;
+
     }
 
     async handledDefaultError(err: any) {
