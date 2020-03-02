@@ -6,6 +6,7 @@ import { tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { ProdutoDto } from '../_models/produto-dto';
 import { ProdutoService } from '../_services/produto.service';
+import { BucketService } from '../_services/bucket.service';
 
 @Component({
     selector: 'app-produtos',
@@ -19,6 +20,7 @@ export class ProdutosPage implements OnInit {
 
     constructor(
         public produtoService: ProdutoService,
+        private buckutService: BucketService,
         private route: ActivatedRoute,
         private navCtrl: NavController
     ) { }
@@ -34,7 +36,7 @@ export class ProdutosPage implements OnInit {
                         tap(produto => {
                             const produtos: ProdutoDto[] = produto['content']
                             for (let index = 0; index < produtos.length; index++) {
-                                this.loadImageUrl(produtos[index]);
+                                produtos[index] = this.buckutService.loadSmallImageProdutoUrl(produtos[index]);
                             }
                         })
                     ).subscribe(response => {
@@ -43,14 +45,6 @@ export class ProdutosPage implements OnInit {
                         error => { });
             }
         );
-    }
-
-    loadImageUrl(item: ProdutoDto) {
-        this.produtoService.getSmallImageFromBucket(item.id)
-          .subscribe(response => {
-            item.imageUrl = `${environment.bucketBaseUrl}prod${item.id}-small.jpg`;
-          },
-          error => {});
     }
 
     showDetail(produto_id) {
