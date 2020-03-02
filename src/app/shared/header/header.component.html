@@ -7,7 +7,7 @@
         <ion-title>{{ title }}</ion-title>
     </ion-toolbar>
 </ion-header>
-<ion-fab vertical="top" horizontal="end" slot="fixed">
+<ion-fab *ngIf="showFab" vertical="top" horizontal="end" slot="fixed">
     <ion-fab-button href="/cart">
         <ion-icon name="cart"></ion-icon>
     </ion-fab-button>

@@ -49,6 +49,11 @@ export class AppComponent {
 					icon: 'people'
 				},
 				{
+					title: 'Carrinho',
+					url: '/cart',
+					icon: 'cart'
+				},
+				{
 					title: 'Logout',
 					url: '/logout',
 					icon: 'log-out'
