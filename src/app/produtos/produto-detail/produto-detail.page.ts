@@ -7,7 +7,6 @@ import { ProdutoDto } from 'src/app/_models/produto-dto';
 import { ProdutoService } from 'src/app/_services/produto.service';
 import { CartService } from './../../_services/cart.service';
 import { BucketService } from 'src/app/_services/bucket.service';
-import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'app-produto-detail',
