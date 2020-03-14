@@ -1,9 +1,12 @@
-import { ClienteService } from './../_services/cliente.service';
 import { NavController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
+import { map } from 'rxjs/operators';
 
-import { StorageService } from '../_services/storage.service';
+import { PedidoDTO } from './../_models/pedido-dto';
 import { EnderecoDto } from './../_models/endereco-dto';
+import { CartService } from './../_services/cart.service';
+import { ClienteService } from './../_services/cliente.service';
+import { StorageService } from '../_services/storage.service';
 
 @Component({
     selector: 'app-pick-address',
@@ -14,10 +17,13 @@ export class PickAddressPage implements OnInit {
     
     items: EnderecoDto[];
     
+    pedido: PedidoDTO;
+    
     constructor(
         private navCtrl: NavController,
         private storage: StorageService,
-        private clienteService: ClienteService
+        private clienteService: ClienteService,
+        private carService: CartService
         ) { }
         
         ngOnInit() {
@@ -26,6 +32,16 @@ export class PickAddressPage implements OnInit {
                 this.clienteService.findByEmail(localUser.email)
                 .subscribe(response => {
                     this.items = response['enderecos'];
+                    const cart = this.carService.getCart();
+                    
+                    this.pedido = {
+                        cliente:  {id: response['id']},
+                        enderecoDeEntrega: null,
+                        pagamento: null,
+                        itens: cart.items.map(x => {return {
+                            quantidade: x.quantidade, produto: {id: x.produto.id}};
+                        })
+                    };
                 },
                 error => {
                     if (error.status === 403) {
@@ -35,7 +51,11 @@ export class PickAddressPage implements OnInit {
             } else {
                 this.navCtrl.navigateRoot('/home');
             }
-            
+        }
+        
+        nextPage(address: EnderecoDto) {
+            this.pedido.enderecoDeEntrega = {id: address.id};
+            console.log(this.pedido);
         }
         
     }
