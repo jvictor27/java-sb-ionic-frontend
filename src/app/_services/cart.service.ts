@@ -80,7 +80,7 @@ export class CartService {
 
 
 		const position = cart.items.findIndex(x => x.produto.id === produto.id);
-
+		
 		if (position === -1) {
 			cart.items.push({ quantidade: 1, produto: produto });
 		} else {
