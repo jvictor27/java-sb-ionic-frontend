@@ -4,14 +4,16 @@ import { Injectable } from '@angular/core';
 
 import { StorageService } from './storage.service';
 import { ClienteDto } from '../_models/cliente-dto';
+import { PedidoDTO } from './../_models/pedido-dto';
 import { SignupPageModule } from './../signup/signup.module';
 import { environment } from './../../environments/environment';
-
 
 @Injectable({
 	providedIn: 'root'
 })
 export class ClienteService {
+
+	private pedidoFinalizado: PedidoDTO;
 
 	constructor(public http: HttpClient, public storage: StorageService) { }
 
@@ -31,4 +33,12 @@ export class ClienteService {
 			responseType: 'text'
 		});
 	}
+
+	setPedidoFinalizado(pedido: PedidoDTO) {
+		this.pedidoFinalizado = pedido;
+	  }
+	
+	  getPedidoFinalizado(): PedidoDTO {
+		return this.pedidoFinalizado;
+	  }
 }

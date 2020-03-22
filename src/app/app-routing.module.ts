@@ -44,7 +44,11 @@ const routes: Routes = [
 	{ 
 		path: 'pick-address', 
 		loadChildren: () => import('./pick-address/pick-address.module').then(m => m.PickAddressPageModule)
-	}
+	},
+	{ 
+		path: 'payment', 
+		loadChildren: () => import('./payment/payment.module').then(m => m.PaymentPageModule)
+	},
 ];
 
 @NgModule({
