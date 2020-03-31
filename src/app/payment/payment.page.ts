@@ -1,11 +1,8 @@
-import { NavController, NavParams } from '@ionic/angular';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { NavController } from '@ionic/angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
-import { map, tap } from 'rxjs/operators';
 
 import { ClienteService } from './../_services/cliente.service';
-import { ParamService } from './../_services/param.service';
 import { PedidoDTO } from '../_models/pedido-dto';
 
 @Component({
@@ -22,10 +19,10 @@ export class PaymentPage implements OnInit {
     
     constructor(
         private clienteService: ClienteService,
-        public navCtrl: NavController,
+        private navCtrl: NavController,
         private formBuilder: FormBuilder) 
     {
-        this.pedido = this.clienteService.getPedidoFinalizado();
+        this.pedido = this.clienteService.getPedidoParaFinalizar();
     }
         
     ngOnInit() {
@@ -37,7 +34,8 @@ export class PaymentPage implements OnInit {
     
     nextPage() {
         this.pedido.pagamento = this.paymentForm.value;
-        console.log(this.pedido);
+        this.clienteService.setPedidoParaFinalizar(this.pedido);
+        this.navCtrl.navigateForward(['/order-confirmation']);
     }
         
 }

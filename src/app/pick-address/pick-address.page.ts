@@ -58,7 +58,7 @@ export class PickAddressPage implements OnInit {
             this.pedido.enderecoDeEntrega = {id: address.id};
             // console.log(this.pedido);
 
-            this.clienteService.setPedidoFinalizado(this.pedido);
+            this.clienteService.setPedidoParaFinalizar(this.pedido);
             this.navCtrl.navigateForward(['/payment']);
         }
         

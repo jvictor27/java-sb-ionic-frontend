@@ -12,20 +12,24 @@ import { environment } from './../../environments/environment';
 	providedIn: 'root'
 })
 export class ClienteService {
-
-	private pedidoFinalizado: PedidoDTO;
-
+	
+	private pedidoParaFinalizar: PedidoDTO;
+	
 	constructor(public http: HttpClient, public storage: StorageService) { }
-
+	
 	findByEmail(email: string) {
 		return this.http.get(`${environment.baseUrl}clientes/email?value=${email}`);
-	  }
-
+	}
+	
+	findById(id) {
+		return this.http.get(`${environment.baseUrl}/clientes/${id}`);
+	}
+	
 	getImageFromBucket(id: string): Observable<any> {
 		const url = `${environment.bucketBaseUrl}cp${id}.jpg`;
 		return this.http.get(url, { responseType: 'blob' });
 	}
-
+	
 	inserir(cliente: ClienteDto) {
 		return this.http.post(`${environment.baseUrl}clientes`, cliente,
 		{
@@ -33,12 +37,12 @@ export class ClienteService {
 			responseType: 'text'
 		});
 	}
-
-	setPedidoFinalizado(pedido: PedidoDTO) {
-		this.pedidoFinalizado = pedido;
-	  }
 	
-	  getPedidoFinalizado(): PedidoDTO {
-		return this.pedidoFinalizado;
-	  }
+	setPedidoParaFinalizar(pedido: PedidoDTO) {
+		this.pedidoParaFinalizar = pedido;
+	}
+	
+	getPedidoParaFinalizar(): PedidoDTO {
+		return this.pedidoParaFinalizar;
+	}
 }
