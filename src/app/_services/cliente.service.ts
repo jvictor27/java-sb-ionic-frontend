@@ -22,7 +22,7 @@ export class ClienteService {
 	}
 	
 	findById(id) {
-		return this.http.get(`${environment.baseUrl}/clientes/${id}`);
+		return this.http.get(`${environment.baseUrl}clientes/${id}`);
 	}
 	
 	getImageFromBucket(id: string): Observable<any> {
