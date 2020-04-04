@@ -15,7 +15,9 @@ import { BucketService } from '../_services/bucket.service';
 })
 export class ProdutosPage implements OnInit {
 
-    items: ProdutoDto[];
+    items: ProdutoDto[] = [];
+    page = 0;
+
     bucketUrl: string;
     private loading: any;
 
@@ -29,6 +31,7 @@ export class ProdutosPage implements OnInit {
     ) { }
 
     async ngOnInit() {
+        this.resetList();
         this.loadData();
     }
 
@@ -36,14 +39,16 @@ export class ProdutosPage implements OnInit {
         this.bucketUrl = environment.bucketBaseUrl;
         await this.presentLoading();
         this.route.paramMap.subscribe((params: ParamMap) => {
-            this.produtoService.findByCategoria(params.get('categoria_id'))
+            this.produtoService.findByCategoria(params.get('categoria_id'), this.page, 10)
             .pipe(tap(produto => {
                 const produtos: ProdutoDto[] = produto['content'];
                 for (let index = 0; index < produtos.length; index++) {
                     produtos[index] = this.buckutService.loadSmallImageProdutoUrl(produtos[index]);
                 }
             })).subscribe(response => {
-                this.items = response['content'];
+                this.items = this.items.concat(response['content']);
+                // console.log(this.page);
+                // console.log(this.items);
             }, error => { this.dismissLoading(); });
         });
         await this.dismissLoading();
@@ -54,10 +59,24 @@ export class ProdutosPage implements OnInit {
     }
 
     doRefresh(event) {
+        this.resetList();
         setTimeout(() => {
             this.loadData();
             event.target.complete();
         }, 1000);
+    }
+
+    doInfinite(event) {
+        this.page++;
+        this.loadData();
+        setTimeout(() => {
+            event.target.complete();
+        }, 1000);
+    }
+    
+    resetList() {
+        this.items = [];
+        this.page = 0;
     }
 
     private async presentLoading() {
