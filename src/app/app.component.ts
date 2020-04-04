@@ -13,8 +13,8 @@ export class AppComponent {
 
 	constructor(
 		private platform: Platform,
+		// private statusBar: StatusBar
 		private splashScreen: SplashScreen,
-		private statusBar: StatusBar
 	) {
 		this.mountPages();
 		this.initializeApp();
@@ -22,7 +22,7 @@ export class AppComponent {
 
 	initializeApp() {
 		this.platform.ready().then(() => {
-			this.statusBar.styleDefault();
+			// this.statusBar.styleDefault();
 			this.splashScreen.hide();
 		});
 	}

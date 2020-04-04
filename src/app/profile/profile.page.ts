@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 
 import { environment } from 'src/environments/environment.prod';
 import { ClienteDto } from '../_models/cliente-dto';
@@ -14,8 +15,11 @@ import { StorageService } from './../_services/storage.service';
 export class ProfilePage implements OnInit {
 
 	cliente: ClienteDto;
+	picture: string;
+  	cameraOn = false;
 
 	constructor(
+		private camera: Camera,
 		public navCtrl: NavController,
 		public storage: StorageService,
 		public clienteService: ClienteService) { }
@@ -44,6 +48,26 @@ export class ProfilePage implements OnInit {
 				this.cliente.imageUrl = `${environment.bucketBaseUrl}cp${this.cliente.id}.jpg`;
 			},
 				error => { });
+	}
+
+	getCameraPicture() {
+		this.cameraOn = !this.cameraOn;
+	
+		const options: CameraOptions = {
+		  	quality: 100,
+		  	destinationType: this.camera.DestinationType.DATA_URL,
+		  	encodingType: this.camera.EncodingType.PNG,
+		  	mediaType: this.camera.MediaType.PICTURE
+		};
+	
+		this.camera.getPicture(options).then((imageData) => {
+		 	const mediaSource = new MediaSource();
+		 	const video = document.createElement('video');
+		 	this.picture = 'data:image/png;base64,' + imageData;
+		 	this.cameraOn = !this.cameraOn;
+		}, (err) => {
+			 // Handle error
+		});
 	}
 
 }
