@@ -25,6 +25,10 @@ export class ProfilePage implements OnInit {
 		public clienteService: ClienteService) { }
 
 	ngOnInit() {
+		this.loadData();
+	}
+		
+	loadData() {
 		const localUser = this.storage.getLocalUser();
 		if (localUser && localUser.email) {
 			this.clienteService.findByEmail(localUser.email)
@@ -61,13 +65,24 @@ export class ProfilePage implements OnInit {
 		};
 	
 		this.camera.getPicture(options).then((imageData) => {
-		 	const mediaSource = new MediaSource();
-		 	const video = document.createElement('video');
 		 	this.picture = 'data:image/png;base64,' + imageData;
 		 	this.cameraOn = !this.cameraOn;
 		}, (err) => {
 			 // Handle error
 		});
+	}
+
+	sendPicture() {
+		this.clienteService.uploadPicture(this.picture)
+		.subscribe(response => {
+		  	this.cancel();
+		  	this.loadData();
+		},
+		error => {});
+	}
+	
+	cancel() {
+		this.picture = null;
 	}
 
 }
