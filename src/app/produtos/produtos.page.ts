@@ -1,4 +1,4 @@
-import { NavController } from '@ionic/angular';
+import { NavController, LoadingController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { tap } from 'rxjs/operators';
@@ -17,16 +17,20 @@ export class ProdutosPage implements OnInit {
 
     items: ProdutoDto[];
     bucketUrl: string;
+    private loading: any;
+
 
     constructor(
-        public produtoService: ProdutoService,
+        private loadCtrl: LoadingController,
+        private produtoService: ProdutoService,
         private buckutService: BucketService,
         private route: ActivatedRoute,
         private navCtrl: NavController
     ) { }
 
-    ngOnInit() {
+    async ngOnInit() {
         this.bucketUrl = environment.bucketBaseUrl;
+        await this.presentLoading();
 
         this.route.paramMap.subscribe(
             (params: ParamMap) => {
@@ -42,12 +46,27 @@ export class ProdutosPage implements OnInit {
                     ).subscribe(response => {
                         this.items = response['content'];
                     },
-                        error => { });
+                    error => {
+                        this.dismissLoading(); 
+                    });
             }
         );
+        await this.dismissLoading();
     }
 
     showDetail(produto_id) {
         this.navCtrl.navigateForward(['/produto-detail', {produto_id: produto_id}]);
+    }
+
+    private async presentLoading() {
+        this.loading = await this.loadCtrl.create({
+            message: 'Aguarde...',
+            translucent: true,
+        });
+        this.loading.present();
+    }
+    
+    private async dismissLoading() {
+        this.loading.dismiss();
     }
 }
