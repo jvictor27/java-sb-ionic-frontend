@@ -7,6 +7,7 @@ import { ClienteDto } from './../_models/cliente-dto';
 import { PedidoDTO } from '../_models/pedido-dto';
 import { CartService } from '../_services/cart.service';
 import { ClienteService } from './../_services/cliente.service';
+import { PedidoService } from '../_services/pedido.service';
 
 @Component({
     selector: 'app-order-confirmation',
@@ -25,7 +26,8 @@ export class OrderConfirmationPage implements OnInit {
     constructor(
         private clienteService: ClienteService,
         private cartService: CartService,
-        private navCtrl: NavController
+        private navCtrl: NavController,
+        private pedidoService: PedidoService
         )
     {
         this.pedido = this.clienteService.getPedidoParaFinalizar();
@@ -40,7 +42,8 @@ export class OrderConfirmationPage implements OnInit {
             this.endereco  = (response['enderecos'] as EnderecoDto[]).filter(x => x.id === this.pedido.enderecoDeEntrega.id)[0];
         },
         erro => {
-            this.navCtrl.navigateForward(['/home']);
+            return false;
+            this.navCtrl.navigateRoot(['/home']);
         });
     }
     
@@ -48,11 +51,26 @@ export class OrderConfirmationPage implements OnInit {
         return this.cartService.total();
     }
     
-    checkout() {}
+    checkout() {
+        this.pedidoService.insert(this.pedido)
+        .subscribe(response => {
+            this.cartService.createOrClearCartInLocalStorage();
+            console.log(response.headers.get('location'));
+        },
+        error => {
+          if (error.status === 403) {
+            this.navCtrl.navigateRoot(['/home']);
+          }
+        });
+    }
     
-    home() {}
+    home() {
+        this.navCtrl.navigateRoot(['/home']);
+    }
     
-    back() {}
+    back() {
+        this.navCtrl.navigateRoot(['/cart']);
+    }
         
 }
     
