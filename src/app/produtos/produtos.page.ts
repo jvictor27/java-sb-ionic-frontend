@@ -29,33 +29,35 @@ export class ProdutosPage implements OnInit {
     ) { }
 
     async ngOnInit() {
+        this.loadData();
+    }
+
+    private async loadData() {
         this.bucketUrl = environment.bucketBaseUrl;
         await this.presentLoading();
-
-        this.route.paramMap.subscribe(
-            (params: ParamMap) => {
-                console.log(params);
-                this.produtoService.findByCategoria(params.get('categoria_id'))
-                    .pipe(
-                        tap(produto => {
-                            const produtos: ProdutoDto[] = produto['content']
-                            for (let index = 0; index < produtos.length; index++) {
-                                produtos[index] = this.buckutService.loadSmallImageProdutoUrl(produtos[index]);
-                            }
-                        })
-                    ).subscribe(response => {
-                        this.items = response['content'];
-                    },
-                    error => {
-                        this.dismissLoading(); 
-                    });
-            }
-        );
+        this.route.paramMap.subscribe((params: ParamMap) => {
+            this.produtoService.findByCategoria(params.get('categoria_id'))
+            .pipe(tap(produto => {
+                const produtos: ProdutoDto[] = produto['content'];
+                for (let index = 0; index < produtos.length; index++) {
+                    produtos[index] = this.buckutService.loadSmallImageProdutoUrl(produtos[index]);
+                }
+            })).subscribe(response => {
+                this.items = response['content'];
+            }, error => { this.dismissLoading(); });
+        });
         await this.dismissLoading();
     }
 
     showDetail(produto_id) {
         this.navCtrl.navigateForward(['/produto-detail', {produto_id: produto_id}]);
+    }
+
+    doRefresh(event) {
+        setTimeout(() => {
+            this.loadData();
+            event.target.complete();
+        }, 1000);
     }
 
     private async presentLoading() {
